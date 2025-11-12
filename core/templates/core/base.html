@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación</title>
+    
+</head>
+<body>
+
+ <header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo de la aplicación">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'products' %}">Productos</a></li>
+            {% if request.session.usuario_id %}
+                <li><a href="{% url 'exit' %}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+            {% endif %}
+            
+        </ul>
+    </nav>
+</header>
+
+    <section class="contenido">
+        <div class="texto">
+            <h2>Encuentra el auto perfecto</h2>
+            <p>Alquila vehículos de alta calidad para cualquier ocasión. Desde autos económicos hasta deportivos de lujo.</p>
+        </div>
+        <div class="imagen">
+            <img src="{% static 'img/tasman.PNG' %}" alt="Auto de lujo">
+        </div>
+        <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    </section>
+
+    {% block content %}{% endblock %}
+</body>
+</html>
