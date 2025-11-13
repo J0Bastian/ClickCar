@@ -1,0 +1,31 @@
+# --- Django / Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Base de datos local ---
+db.sqlite3
+
+# --- Entorno virtual ---
+venv/
+env/
+
+# --- Migraciones compiladas ---
+*/migrations/__pycache__/
+*/migrations/*.pyc
+
+# --- Archivos temporales ---
+*.log
+*.tmp
+*.swp
+
+# --- Archivos de VSCode ---
+.vscode/
+.code/
+
+# --- Archivos multimedia subidos por usuarios ---
+media/
+
+# --- Archivos de sistema ---
+.DS_Store
+Thumbs.db
