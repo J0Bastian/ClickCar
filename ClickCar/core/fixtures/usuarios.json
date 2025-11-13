@@ -1,0 +1,38 @@
+[
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "Admin ClickCar",
+            "correo": "admin@clickcar.com",
+            "contrasena": "admin123",
+            "telefono": "3101234567",
+            "fecha_registro": "2025-11-11T10:00:00Z",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 2,
+        "fields": {
+            "nombre": "Juan Pérez",
+            "correo": "juanperez@gmail.com",
+            "contrasena": "juan123",
+            "telefono": "3119876543",
+            "fecha_registro": "2025-11-10T15:30:00Z",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 3,
+        "fields": {
+            "nombre": "María Gómez",
+            "correo": "mariagomez@gmail.com",
+            "contrasena": "maria123",
+            "telefono": "3007654321",
+            "fecha_registro": "2025-11-09T09:45:00Z",
+            "activo": true
+        }
+    }
+]

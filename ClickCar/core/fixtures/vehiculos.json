@@ -1,0 +1,50 @@
+[
+    {
+        "model": "core.vehiculo",
+        "pk": 1,
+        "fields": {
+            "marca": "Toyota",
+            "modelo": "Corolla",
+            "categoria": "Sedán",
+            "anio": 2021,
+            "precio_dia": "150000.00",
+            "disponible": true,
+            "descripcion": "Confortable, eficiente y confiable.",
+            "foto_url": "toyotacorolla-ABC123.jpg",
+            "combustible": "Gasolina",
+            "asientos": "5"
+        }
+    },
+    {
+        "model": "core.vehiculo",
+        "pk": 2,
+        "fields": {
+            "marca": "Mazda",
+            "modelo": "CX-5",
+            "categoria": "SUV",
+            "anio": 2022,
+            "precio_dia": "250000.00",
+            "disponible": true,
+            "descripcion": "SUV moderna y deportiva.",
+            "foto_url": "mazdaCX5-XYZ789.jpg",
+            "combustible": "Gasolina",
+            "asientos": "5"
+        }
+    },
+    {
+        "model": "core.vehiculo",
+        "pk": 3,
+        "fields": {
+            "marca": "Chevrolet",
+            "modelo": "Spark",
+            "categoria": "Compacto",
+            "anio": 2020,
+            "precio_dia": "120000.00",
+            "disponible": true,
+            "descripcion": "Económico y ágil para ciudad.",
+            "foto_url": "spark-LMN456.jpeg",
+            "combustible": "Gasolina",
+            "asientos": "4"
+        }
+    }
+]

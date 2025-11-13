@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehículos - ClickCar</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+                </a>
+            </div>
+            <ul class="menu">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'products' %}">Productos</a></li>
+                {% if request.session.usuario_id %}
+                    <li><a href="{% url 'exit' %}">Salir</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Ingresar</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <section class="productos">
+        <h3>Vehículos Disponibles</h3>
+
+        <div class="grid">
+            {% for v in vehiculos %}
+                <div class="card">
+                    <img src="{% static 'img/' %}{{ v.foto_url }}" alt="{{ v.marca }}">
+                    <h4>{{ v.marca }} {{ v.modelo }}</h4>
+                    <p><strong>Categoría:</strong> {{ v.categoria }}</p>
+                    <p><strong>Año:</strong> {{ v.anio }}</p>
+                    <p><strong>Combustible:</strong> {{ v.combustible }}</p>
+                    <p><strong>Asientos:</strong> {{ v.asientos }}</p>
+                    <p><strong>Precio:</strong> ${{ v.precio_dia }} / día</p>
+                    <p><em>{{ v.descripcion }}</em></p>
+                    <button onclick="window.location.href='/reserva/{{ v.id_vehiculo }}/'">Reservar</button>
+                </div>
+            {% empty %}
+                <p>No hay vehículos disponibles.</p>
+            {% endfor %}
+        </div>
+    </section>
+</body>
+</html>
