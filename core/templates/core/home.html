@@ -1,15 +1,41 @@
-
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<h3>Inicio</h3>
-{% if request.user.is_authenticated %}
-        <h4>
-            {{ user.username | upper }}, bienvenido a la plataforma.
-        </h4>
+<section class="productos">
+    <h3>Vehículos Disponibles</h3>
 
-        {% endif %}
+    <div class="grid">
+        {% for v in vehiculos %}
+            <div class="card">
+                <img src="{% static 'img/' %}{{ v.foto_url }}" alt="{{ v.marca }}">
 
+                <h4>{{ v.marca }} {{ v.modelo }}</h4>
+                <p><strong>Categoría:</strong> {{ v.categoria }}</p>
+                <p><strong>Año:</strong> {{ v.anio }}</p>
+                <p><strong>Combustible:</strong> {{ v.combustible }}</p>
+                <p><strong>Asientos:</strong> {{ v.asientos }}</p>
+                <p><strong>Color:</strong> {{ v.color }}</p>
+                <p><strong>Precio:</strong> ${{ v.precio_dia }} / día</p>
+                <p><em>{{ v.descripcion }}</em></p>
 
-{% endblock %} 
+                {% if request.session.usuario_id %}
+                    <!-- SI ESTÁ LOGEADO → IR A RESERVA -->
+                    <button onclick="window.location.href='/reserva/{{ v.id_vehiculo }}/'">
+                        Reservar
+                    </button>
+                {% else %}
+                    <!-- SI NO ESTÁ LOGEADO → IR A LOGIN -->
+                    <button onclick="window.location.href='{% url 'login' %}'">
+                        Reservar
+                    </button>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p>No hay vehículos disponibles.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

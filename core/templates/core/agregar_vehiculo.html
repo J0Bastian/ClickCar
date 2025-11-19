@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Vehículo</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+
+            {% if request.session.usuario_rol == "admin" %}
+                <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+            {% endif %}
+
+            <li><a href="{% url 'products' %}">Productos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<section class="panel-admin">
+
+    <div class="panel-header">
+        <h2>Agregar Vehículo</h2>
+        <p>Completa los datos para registrar un nuevo vehículo en ClickCar</p>
+    </div>
+
+    <div class="form-container">
+ <form method="POST">
+    {% csrf_token %}
+
+    <label>Marca</label>
+    <input type="text" name="marca" required>
+
+    <label>Modelo</label>
+    <input type="text" name="modelo" required>
+
+    <label>Categoría</label>
+    <input type="text" name="categoria">
+
+    <label>Año</label>
+    <input type="number" name="anio">
+
+    <label>Precio por Día</label>
+    <input type="number" step="0.01" name="precio_dia" required>
+
+    <label>Color</label>
+    <input type="text" name="color">
+
+    <label>Combustible</label>
+    <input type="text" name="combustible">
+
+    <label>Asientos</label>
+    <input type="text" name="asientos">
+
+    <label>Descripción</label>
+    <textarea name="descripcion"></textarea>
+
+    <label>URL de la foto (foto_url)</label>
+    <input type="text" name="foto_url">
+
+    <button type="submit" class="btn-ver" style="margin-top:15px;">Guardar</button>
+</form>
+    </div>
+
+</section>
+
+
+<style>
+.form-container {
+    width: 60%;
+    margin: 0 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px #d9d9d9;
+    margin-top: 25px;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+</style>
+
+</body>
+</html>

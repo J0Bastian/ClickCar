@@ -12,7 +12,8 @@
             "descripcion": "Confortable, eficiente y confiable.",
             "foto_url": "toyotacorolla-ABC123.jpg",
             "combustible": "Gasolina",
-            "asientos": "5"
+            "asientos": "5",
+            "color": "Blanco"
         }
     },
     {
@@ -28,7 +29,8 @@
             "descripcion": "SUV moderna y deportiva.",
             "foto_url": "mazdaCX5-XYZ789.jpg",
             "combustible": "Gasolina",
-            "asientos": "5"
+            "asientos": "5",
+            "color": "Rojo"
         }
     },
     {
@@ -44,7 +46,8 @@
             "descripcion": "Económico y ágil para ciudad.",
             "foto_url": "spark-LMN456.jpeg",
             "combustible": "Gasolina",
-            "asientos": "4"
+            "asientos": "4",
+            "color": "Azul"
         }
     }
 ]

@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+
+            {% if request.session.usuario_rol == "admin" %}
+                <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+            {% endif %}
+
+            <li><a href="{% url 'products' %}">Productos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="panel-admin">
+
+    <!-- ENCABEZADO -->
+    <div class="panel-header">
+        <h2>Panel de Administración</h2>
+        <p>Gestionar usuarios y visualizar actividad</p>
+    </div>
+
+<!-- ========================== -->
+<!--       LISTA DE USUARIOS    -->
+<!-- ========================== -->
+<h3>Lista de Usuarios</h3>
+<p>Haz clic en un usuario para ver su perfil completo y alquileres</p>
+
+<table class="panel-table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Teléfono</th>
+            <th>Fecha Registro</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for u in usuarios %}
+        <tr>
+            <td>{{ u.nombre }}</td>
+            <td>{{ u.correo }}</td>
+            <td>{{ u.telefono }}</td>
+            <td>{{ u.fecha_registro|date:"d/m/Y" }}</td>
+            <td>
+                <a href="{% url 'perfil_usuario' u.id_usuario %}">
+                    <button class="btn-ver">Ver Perfil</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- ========================== -->
+<!--       LISTA DE RESERVAS    -->
+<!-- ========================== -->
+<h3 style="margin-top: 50px;">Lista de Reservas</h3>
+<p>Consulta todas las reservas realizadas en ClickCar</p>
+
+<table class="panel-table">
+    <thead>
+        <tr>
+            <th>Cliente</th>
+            <th>Vehículo</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for r in reservas %}
+        <tr>
+            <td>{{ r.usuario.nombre }}</td>
+            <td>{{ r.auto.marca }} {{ r.auto.modelo }}</td>
+            <td>{{ r.fecha_inicio }}</td>
+            <td>{{ r.fecha_fin }}</td>
+            <td>${{ r.valor_total }}</td>
+            <td>
+                <a href="{% url 'detalle_reserva' r.id_reserva %}">
+                    <button class="btn-ver">Ver Detalle</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- ========================== -->
+<!--       LISTA DE VEHÍCULOS   -->
+<!-- ========================== -->
+<h3 style="margin-top: 50px;">Lista de Vehículos</h3>
+<p>Consulta todos los vehículos registrados en ClickCar</p>
+
+<a href="{% url 'agregar_vehiculo' %}">
+    <button class="btn-ver" style="margin-bottom: 20px;">+ Agregar Vehículo</button>
+</a>
+
+<table class="panel-table">
+    <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Año</th>
+            <th>Color</th>
+            <th>ID Vehículo</th>
+            <th>Precio/Día</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for v in vehiculos %}
+        <tr>
+
+            <!-- FOTO -->
+            <td>
+                {% if v.foto_url %}
+                    <img src="{{ v.foto_url }}" class="mini-foto">
+                {% else %}
+                    <span style="color: #888;">Sin foto</span>
+                {% endif %}
+            </td>
+
+            <td>{{ v.marca }}</td>
+            <td>{{ v.modelo }}</td>
+            <td>{{ v.anio }}</td>
+            <td>{{ v.color }}</td>
+            <td>{{ v.id_vehiculo }}</td>
+            <td>${{ v.precio_dia }}</td>
+            <td>
+                <a href="{% url 'eliminar_vehiculo' v.id_vehiculo %}">
+                    <button class="btn-ver" style="background:#ff4d88;">Eliminar</button>
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

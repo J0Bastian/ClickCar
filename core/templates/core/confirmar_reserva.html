@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Reserva</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<!-- MENSAJES -->
+{% if messages %}
+<div class="messages-container">
+    {% for msg in messages %}
+        <p class="msg {{ msg.tags }}">{{ msg }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- PANEL GENERAL -->
+<div class="confirm-container">
+
+    <!-- HEADER -->
+    <div class="confirm-header">
+        <div>
+            <p class="confirm-title-small">Número de Confirmación</p>
+            <h2 class="confirm-code">CLICK-{{ reserva_id }}</h2>
+        </div>
+    </div>
+
+    <!-- VEHÍCULO -->
+    <section class="confirm-section">
+        <h3>🚗 Información del Vehículo</h3>
+
+        <div class="vehicle-info">
+            <img src="{% static 'img/' %}{{ vehiculo.foto_url }}" alt="Vehículo">
+
+            <div class="vehicle-details">
+                <h2>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
+                <p class="vehicle-year">{{ vehiculo.anio }}</p>
+
+                <div class="tag-group">
+                    <span class="tag">{{ vehiculo.categoria }}</span>
+                    <span class="tag">{{ vehiculo.transmision|default:"Automático" }}</span>
+                    <span class="tag">{{ vehiculo.asientos }} asientos</span>
+                    <span class="tag">{{ vehiculo.combustible }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERIODO -->
+    <section class="confirm-section">
+        <h3>📅 Periodo</h3>
+
+        <div class="date-row">
+            <div class="date-box">
+                <span class="dot green"></span> <strong>Inicio:</strong>
+                <p>{{ datos.fecha_inicio }}</p>
+            </div>
+
+            <div class="date-box">
+                <span class="dot red"></span> <strong>Fin:</strong>
+                <p>{{ datos.fecha_fin }}</p>
+            </div>
+        </div>
+
+        <div class="days-box">{{ datos.dias }} días de alquiler</div>
+    </section>
+
+    <!-- CLIENTE -->
+    <section class="confirm-section">
+        <h3>🧑 Cliente</h3>
+
+        <div class="client-box">
+            <img src="{% static 'img/perfil.png' %}" class="client-photo">
+
+            <div>
+                <h4>{{ request.session.usuario_nombre }}</h4>
+                <p>{{ request.session.usuario_correo }}</p>
+                <p>{{ request.session.usuario_telefono }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRECIOS -->
+    <section class="confirm-section">
+        <h3>💰 Detalles del Pago</h3>
+
+        <div class="price-row">
+            <span>Tarifa × {{ datos.dias }} días</span>
+            <span>${{ vehiculo.precio_dia|floatformat:0 }} × {{ datos.dias }}</span>
+        </div>
+
+        <div class="price-row">
+            <span>Subtotal</span>
+            <span>${{ datos.subtotal }}</span>
+        </div>
+
+        <div class="price-row">
+            <span>IVA (19%)</span>
+            <span>${{ datos.iva }}</span>
+        </div>
+
+        <div class="total-row">
+            <span>Total</span>
+            <span class="total">${{ datos.valor_total }}</span>
+        </div>
+    </section>
+
+    <!-- INFO IMPORTANTE -->
+    <section class="confirm-section">
+        <h3>ℹ Importante</h3>
+        <ul class="info-list">
+            <li>El pago se realiza al recoger el vehículo.</li>
+            <li>Presenta tu documento al entregarlo.</li>
+            <li>Devuelve el vehículo con el mismo nivel de combustible.</li>
+        </ul>
+    </section>
+
+    <!-- BOTONES -->
+    <div class="btn-row">
+        <!-- DESCARGA PDF DESDE LA SESIÓN -->
+        <a href="{% url 'descargar_pdf' %}" class="btn-secondary">📄 Descargar Recibo</a>
+
+        <a href="{% url 'home' %}" class="btn-primary">🏠 Volver al Inicio</a>
+    </div>
+
+</div>
+
+</body>
+</html>

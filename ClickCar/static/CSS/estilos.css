@@ -1,0 +1,293 @@
+/* ======== ESTILOS GENERALES ======== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* ======== HEADER ======== */
+header {
+    background-color: #ffffff;
+    padding: 0;
+    margin: 0;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* ======== NAV ======== */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    padding: 0 30px;
+    box-sizing: border-box;
+}
+
+.logo img {
+    height: 60px;
+    width: auto;
+}
+
+nav ul {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+nav a:hover {
+    color: #4A47FF;
+}
+
+/* ======== SECCIÓN INICIO ======== */
+.contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    background-color: #D6D3FE;
+}
+
+.texto {
+    flex: 1;
+    padding-right: 30px;
+}
+
+.texto h2 {
+    font-size: 32px;
+    color: #3A2E8C;
+    margin-bottom: 10px;
+}
+
+.texto p {
+    font-size: 18px;
+    color: #555;
+}
+
+.imagen {
+    flex: 1;
+    text-align: center;
+}
+
+.imagen img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+/* ======== SECCIÓN PRODUCTOS ======== */
+.productos {
+    padding: 40px 80px;
+    background-color: #f5f5f5;
+}
+
+.productos h3 {
+    text-align: center;
+    color: #222;
+    margin-bottom: 40px;
+    font-size: 1.8em;
+    font-weight: 600;
+}
+
+/* ======== GRID VEHÍCULOS ======== */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 vehículos por fila */
+    gap: 40px;
+    justify-items: center;
+}
+
+/* ======== TARJETAS VEHÍCULOS ======== */
+.card {
+    background-color: #ffffff;
+    border: 2px solid #cfcfcf; /* Borde más elegante */
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    width: 320px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #ddd;
+}
+
+.card h4 {
+    margin: 15px 0 8px;
+    color: #222;
+    font-size: 1.2em;
+}
+
+.card p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.card button {
+    margin: 15px auto 20px;
+    background-color: #7b42f6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 80%;
+    transition: background-color 0.3s ease;
+}
+
+.card button:hover {
+    background-color: #5d2fd4;
+}
+
+/* ======== FORMULARIO LOGIN ======== */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px); /* evita que tape el header */
+    background-color: #f6f7fb;
+    padding-top: 40px; /* separación del header */
+}
+
+.login-form {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.login-form h1 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #3A2E8C;
+    font-size: 1.6em;
+}
+
+.login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    color: #444;
+    font-weight: 600;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.login-form button {
+    width: 100%;
+    background-color: #6f5cff;
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-form button:hover {
+    background-color: #5d2fd4;
+}
+
+.login-form a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #6f5cff;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.mensaje-error {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.mensaje-ok {
+    color: green;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* ======== FORMULARIO RESERVA ======== */
+.reserva-form {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.reserva-form h2 {
+    text-align: center;
+    color: #3A2E8C;
+    margin-bottom: 20px;
+}
+
+.reserva-form input,
+.reserva-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.reserva-form button {
+    width: 100%;
+    background-color: #7b42f6;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.reserva-form button:hover {
+    background-color: #5d2fd4;
+}
+
+/* ======== RESPONSIVE ======== */
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 650px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

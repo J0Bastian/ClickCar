@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Reserva {{ reserva.id_reserva }}</title>
+
+    <!-- CSS inline compatible con PDF -->
+    <style>
+        body { font-family: Arial; margin: 25px; }
+        .confirm-header { background: #6c2bf0; color:white; padding:15px; border-radius:8px; display:flex; justify-content:space-between; }
+        .confirm-title-small { font-size:14px; opacity:.8; margin:0; }
+        .confirm-code { font-size:22px; font-weight:bold; margin:0; }
+        .confirm-date { text-align:right; }
+        .confirm-section { margin-top:20px; padding:12px; border:1px solid #ccc; border-radius:8px; }
+        h3 { color:#6c2bf0; margin-top:0; }
+        .vehicle-info { display:flex; gap:12px; }
+        img { border-radius:8px; }
+        .price-row, .date-row { display:flex; justify-content:space-between; }
+        .total { font-size:20px; color:#6c2bf0; font-weight:bold; }
+        .btn-row { display:none; }
+    </style>
+</head>
+
+<body>
+
+<section class="confirm-container">
+
+    <div class="confirm-header">
+        <div>
+            <p class="confirm-title-small">Reserva</p>
+            <p class="confirm-code">#{{ reserva.id_reserva }}</p>
+        </div>
+        <p class="confirm-date">{{ reserva.fecha_reserva|date:"d/m/Y H:i" }}</p>
+    </div>
+
+    <!-- VEHÍCULO -->
+    <div class="confirm-section">
+        <h3>Vehículo</h3>
+
+        <div class="vehicle-info">
+            <img src="{{ reserva.auto.imagen.url }}" alt="Vehículo" width="220">
+
+            <div class="vehicle-details">
+                <h2>{{ reserva.auto.marca }} {{ reserva.auto.modelo }}</h2>
+                <p>{{ reserva.auto.anio }}</p>
+
+                <p><strong>Color:</strong> {{ reserva.auto.color }}</p>
+                <p><strong>Transmisión:</strong> {{ reserva.auto.transmision }}</p>
+                <p><strong>Placa:</strong> {{ reserva.auto.placa }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FECHAS -->
+    <div class="confirm-section">
+        <h3>Fechas</h3>
+
+        <div class="date-row">
+            <div>
+                <strong>Inicio:</strong><br>
+                {{ reserva.fecha_inicio }}
+            </div>
+
+            <div>
+                <strong>Fin:</strong><br>
+                {{ reserva.fecha_fin }}
+            </div>
+        </div>
+    </div>
+
+    <!-- CLIENTE -->
+    <div class="confirm-section">
+        <h3>Cliente</h3>
+
+        <p><strong>{{ reserva.usuario.nombre }}</strong></p>
+        <p>{{ reserva.usuario.correo }}</p>
+        <p>{{ reserva.usuario.telefono }}</p>
+    </div>
+
+    <!-- PRECIOS -->
+    <div class="confirm-section">
+        <h3>Precio</h3>
+
+        <div class="price-row">
+            <span>Total</span>
+            <span class="total">${{ reserva.valor_total }}</span>
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

@@ -12,6 +12,7 @@ class Vehiculo(models.Model):
     foto_url = models.CharField(max_length=255, null=True, blank=True)
     combustible = models.CharField(max_length=50, default='Gasolina')
     asientos = models.CharField(max_length=20, default='5')
+    color = models.CharField(max_length=30, null=True, blank=True)  # 👈 FALTABA
 
     class Meta:
         db_table = 'automoviles'

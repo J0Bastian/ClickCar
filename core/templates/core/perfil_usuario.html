@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de {{ usuario.nombre }} - ClickCar</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+    <!-- ============ HEADER ============ -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+                </a>
+            </div>
+
+            <ul class="menu">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'products' %}">Productos</a></li>
+
+                {% if request.session.usuario_id %}
+
+                    {% if request.session.usuario_rol == "admin" %}
+                        <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+                    {% else %}
+                        <li><a href="{% url 'perfil_usuario' request.session.usuario_id %}">Mi Perfil</a></li>
+                    {% endif %}
+
+                    <li><a href="{% url 'exit' %}">Salir</a></li>
+
+                {% else %}
+                    <li><a href="{% url 'login' %}">Ingresar</a></li>
+                    <li><a href="{% url 'registro' %}">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+
+    <!-- ============ CONTENIDO DEL PERFIL ============ -->
+    <section class="perfil-container">
+
+        <div class="perfil-card">
+            <h2>Información Personal</h2>
+
+            <div class="perfil-info">
+
+                <img src="{% static 'img/user_avatar.png' %}" class="perfil-avatar" alt="Avatar">
+
+                <h3>{{ usuario.nombre }}</h3>
+
+                <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+                <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+                <p><strong>Fecha Registro:</strong> {{ usuario.fecha_registro|date:"d/m/Y" }}</p>
+                <p><strong>Rol:</strong> {{ usuario.nombre_rol }}</p>
+
+            </div>
+        </div>
+
+
+        <!-- ===== Botón “Ver mis reservas” SOLO para usuarios normales ===== -->
+        {% if request.session.usuario_rol != "admin" %}
+        <div class="perfil-buttons">
+            <a href="{% url 'mis_reservas' %}" class="btn-edit" style="margin-top:10px;">
+                Ver mis reservas
+            </a>
+        </div>
+        {% endif %}
+
+
+        <!-- ===== Botones admin ===== -->
+        {% if request.session.usuario_rol == "admin" %}
+        <div class="perfil-buttons">
+            <a href="{% url 'editar_usuario' usuario.id_usuario %}" class="btn-edit">Editar</a>
+
+            <form action="{% url 'eliminar_usuario' usuario.id_usuario %}" 
+                  method="POST" onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">Eliminar</button>
+            </form>
+        </div>
+        {% endif %}
+
+    </section>
+
+</body>
+</html>

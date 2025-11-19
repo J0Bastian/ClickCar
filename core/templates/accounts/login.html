@@ -9,47 +9,52 @@
 </head>
 <body>
 
-    <!-- === HEADER IGUAL AL HOME === -->
-    <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center; gap: 8px;">
-                <a href="{% url 'home' %}">
-                    <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
-                </a>
-                <span style="font-size: 26px; font-weight: bold; color: #4A47FF;">ClickCar</span>
-            </div>
+<header>
+    <nav>
+        <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+            </a>
+            <span style="font-size: 26px; font-weight: bold; color: #4A47FF;">ClickCar</span>
+        </div>
 
-            <ul class="menu">
-                <li><a href="{% url 'home' %}">Inicio</a></li>
-                {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'exit' %}">Salir</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Ingresar</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </header>
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
 
-  <form method="post" action="{% url 'login' %}" class="login-form">
-    {% csrf_token %}
-    <h1>Iniciar Sesión</h1>
+            {% if request.session.usuario_id %}
+                <li><a href="{% url 'exit' %}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+                <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p class="{% if message.tags == 'error' %}mensaje-error{% else %}mensaje-ok{% endif %}">
-                {{ message }}
-            </p>
-        {% endfor %}
-    {% endif %}
+<div class="login-page">
+    <form method="post" action="{% url 'login' %}" class="login-form">
+        {% csrf_token %}
+        <h1>Iniciar Sesión</h1>
 
-    <label for="username">Correo</label>
-    <input type="text" name="username" placeholder="Correo" required>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="{% if 'error' in message.tags %}mensaje-error{% else %}mensaje-ok{% endif %}">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
 
-    <label for="password">Contraseña</label>
-    <input type="password" name="password" placeholder="Contraseña" required>
+        <label>Correo</label>
+        <input type="text" name="username" placeholder="Correo" required>
 
-    <button type="submit">Ingresar</button>
-</form>
+        <label>Contraseña</label>
+        <input type="password" name="password" placeholder="Contraseña" required>
+
+        <button type="submit">Ingresar</button>
+
+        <a href="{% url 'olvide_password' %}">¿Olvidaste tu contraseña?</a>
+    </form>
+</div>
 
 </body>
 </html>

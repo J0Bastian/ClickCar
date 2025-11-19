@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Contraseña</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+<div class="login-page">
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <h1>Nueva Contraseña</h1>
+
+        <label>Nueva contraseña</label>
+        <input type="password" name="contrasena" required>
+
+        <button type="submit">Actualizar Contraseña</button>
+    </form>
+</div>
+
+</body>
+</html>

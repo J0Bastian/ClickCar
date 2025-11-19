@@ -19,12 +19,20 @@
             <ul class="menu">
                 <li><a href="{% url 'home' %}">Inicio</a></li>
                 <li><a href="{% url 'products' %}">Productos</a></li>
-                {% if request.session.usuario_id %}
-                    <li><a href="{% url 'exit' %}">Salir</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Ingresar</a></li>
-                {% endif %}
-            
+{% if request.session.usuario_id %}
+
+    {% if request.session.usuario_rol == "admin" %}
+        <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+    {% else %}
+        <li><a href="{% url 'perfil_usuario' request.session.usuario_id %}">Mi Perfil</a></li>
+    {% endif %}
+
+    <li><a href="{% url 'exit' %}">Salir</a></li>
+
+{% else %}
+    <li><a href="{% url 'login' %}">Ingresar</a></li>
+    <li><a href="{% url 'registro' %}">Registrarse</a></li>
+{% endif %}
             </ul>
         </nav>
     </header>
@@ -41,6 +49,7 @@
                     <p><strong>Año:</strong> {{ v.anio }}</p>
                     <p><strong>Combustible:</strong> {{ v.combustible }}</p>
                     <p><strong>Asientos:</strong> {{ v.asientos }}</p>
+                    <p><strong>Color:</strong> {{ v.color }}</p>
                     <p><strong>Precio:</strong> ${{ v.precio_dia }} / día</p>
                     <p><em>{{ v.descripcion }}</em></p>
                     <button onclick="window.location.href='/reserva/{{ v.id_vehiculo }}/'">Reservar</button>

@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+            <li><a href="{% url 'products' %}">Productos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="login-page">
+
+    <div class="login-form" style="width: 420px; text-align: left;">
+        <h1 style="text-align:center;">Editar Usuario</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="{{ usuario.nombre }}" required>
+
+            <label>Correo</label>
+            <input type="email" name="correo" value="{{ usuario.correo }}" required>
+
+            <label>Teléfono</label>
+            <input type="text" name="telefono" value="{{ usuario.telefono }}" required>
+
+            <label>Rol</label>
+            <select name="rol" style="
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                font-size: 15px;">
+                <option value="cliente" {% if usuario.rol == "cliente" %}selected{% endif %}>Cliente</option>
+                <option value="admin" {% if usuario.rol == "admin" %}selected{% endif %}>Administrador</option>
+            </select>
+
+            <label style="display:flex;align-items:center;gap:6px;font-weight:bold;">
+                <input type="checkbox" name="activo" {% if usuario.activo %}checked{% endif %}>
+                Activo
+            </label>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+
+    </div>
+
+</section>
+
+</body>
+</html>

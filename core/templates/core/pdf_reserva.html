@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Enlazar el CSS externo -->
+    <link rel="stylesheet" href="{% static 'css/pdf_reserva.css' %}">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    Número de Confirmación: CLICK-{{ datos.vehiculo_id }}
+</div>
+
+<!-- VEHICULO -->
+<div class="section">
+    <div class="title">Información del Vehículo</div>
+
+    <!-- Imagen del Vehículo -->
+    <img src="{% static 'img/' %}{{ vehiculo.foto_url }}" class="vehicle-img">
+
+    <div class="info-box">
+        <div class="row"><span class="label">Marca:</span> {{ vehiculo.marca }}</div>
+        <div class="row"><span class="label">Modelo:</span> {{ vehiculo.modelo }}</div>
+        <div class="row"><span class="label">Año:</span> {{ vehiculo.anio }}</div>
+        <div class="row"><span class="label">Transmisión:</span> {{ vehiculo.transmision }}</div>
+        <div class="row"><span class="label">Combustible:</span> {{ vehiculo.combustible }}</div>
+        <div class="row"><span class="label">Asientos:</span> {{ vehiculo.asientos }}</div>
+    </div>
+</div>
+
+<!-- CLIENTE -->
+<div class="section">
+    <div class="title">Información del Cliente</div>
+
+    <div class="info-box">
+        <div class="row"><span class="label">Nombre:</span> {{ usuario.nombre }}</div>
+        <div class="row"><span class="label">Correo:</span> {{ usuario.correo }}</div>
+        <div class="row"><span class="label">Teléfono:</span> {{ usuario.telefono }}</div>
+    </div>
+</div>
+
+<!-- FECHAS -->
+<div class="section">
+    <div class="title">Periodo de Alquiler</div>
+
+    <div class="info-box">
+        <div class="row"><span class="label">Inicio:</span> {{ datos.fecha_inicio }}</div>
+        <div class="row"><span class="label">Fin:</span> {{ datos.fecha_fin }}</div>
+        <div class="row"><span class="label">Días:</span> {{ datos.dias }}</div>
+    </div>
+</div>
+
+<!-- COSTOS -->
+<div class="section">
+    <div class="title">Costo Total</div>
+
+    <div class="info-box">
+        <div class="row"><span class="label">Total a pagar:</span> ${{ datos.valor_total }}</div>
+    </div>
+</div>
+
+</body>
+</html>

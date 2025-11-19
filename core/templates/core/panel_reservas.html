@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Reservas</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<div class="panel-admin">
+
+    <!-- ENCABEZADO -->
+    <div class="panel-header">
+        <h2>Panel de Administración</h2>
+        <p>Gestionar usuarios y visualizar actividad</p>
+    </div>
+
+    <!-- SUBTÍTULO -->
+    <h3>Lista de Reservas</h3>
+    <p>Consulta todas las reservas registradas en el sistema</p>
+
+    <!-- TABLA -->
+    <table class="panel-table">
+        <tr>
+            <th>Cliente</th>
+            <th>Vehículo</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for r in reservas %}
+        <tr>
+            <td>{{ r.usuario.nombre }}</td>
+            <td>{{ r.auto.marca }} {{ r.auto.modelo }}</td>
+            <td>{{ r.fecha_inicio }}</td>
+            <td>{{ r.fecha_fin }}</td>
+            <td>${{ r.valor_total }}</td>
+            <td>
+                <a href="#" class="btn-ver">Ver Detalles</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>
