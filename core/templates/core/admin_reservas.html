@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Todas las Reservas - Admin</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+
+            {% if request.session.usuario_rol == "admin" %}
+                <li><a href="{% url 'visualizar_perfiles' %}">Administracion</a></li>
+                <li><a href="{% url 'admin_reservas' %}">Reservas</a></li>
+            {% endif %}
+
+            <li><a href="{% url 'products' %}">Vehiculos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="panel-admin">
+
+    <h2>Reservas Registradas</h2>
+
+    <table class="panel-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Vehículo</th>
+                <th>Inicio</th>
+                <th>Fin</th>
+                <th>Total</th>
+                <th>Estado</th>
+                <th>Creada</th>
+                <th>PDF</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in reservas %}
+            <tr>
+                <td>{{ r.id_reserva }}</td>
+                <td>{{ r.usuario.nombre }}</td>
+                <td>{{ r.auto.marca }} {{ r.auto.modelo }}</td>
+                <td>{{ r.fecha_inicio }}</td>
+                <td>{{ r.fecha_fin }}</td>
+                <td>${{ r.valor_total }}</td>
+                <td>{{ r.estado }}</td>
+                <td>{{ r.fecha_reserva|date:"d/m/Y H:i" }}</td>
+
+                <td>
+                    <a class="btn-ver" href="{% url 'pdf_reserva' r.id_reserva %}">
+                        Descargar
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</section>
+
+</body>
+</html>

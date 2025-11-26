@@ -1,0 +1,134 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmación de Reserva</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+{% if messages %}
+<div class="messages-container" style="max-width:900px; margin:20px auto;">
+    {% for message in messages %}
+        {% if 'confirmar_reserva' in message.tags %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="confirm-container">
+
+    <!-- ENCABEZADO -->
+    <div class="confirm-header">
+        <div>
+            <p class="confirm-title-small">Confirmación de Reserva</p>
+            <h2 class="confirm-code">CLICK-{{ datos.vehiculo_id }}</h2>
+        </div>
+    </div>
+
+    <!-- VEHÍCULO -->
+    <section class="confirm-section">
+        <h3>🚗 Información del Vehículo</h3>
+
+        <div class="vehicle-info">
+
+            {% if vehiculo.foto %}
+                <img src="{{ vehiculo.foto.url }}" 
+                     alt="{{ vehiculo.marca }}"
+                     style="width: 220px; height:140px; object-fit:cover; border-radius:12px;">
+            {% else %}
+                <img src="{% static 'img/car_default.png' %}"
+                     alt="Sin imagen"
+                     style="width: 220px; height:140px; object-fit:cover; opacity:0.7; border-radius:12px;">
+            {% endif %}
+
+            <div class="vehicle-details">
+                <h2>{{ vehiculo.marca }} {{ vehiculo.modelo }}</h2>
+                <p class="vehicle-year">{{ vehiculo.anio }}</p>
+
+                <div class="tag-group">
+                    <span class="tag">{{ vehiculo.categoria }}</span>
+                    <span class="tag">{{ vehiculo.transmision|default:"Automático" }}</span>
+                    <span class="tag">{{ vehiculo.asientos }} asientos</span>
+                    <span class="tag">{{ vehiculo.combustible }}</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERIODO -->
+    <section class="confirm-section">
+        <h3>📅 Periodo</h3>
+
+        <div class="date-row">
+            <div class="date-box">
+                <span class="dot green"></span> <strong>Inicio:</strong>
+                <p>{{ datos.fecha_inicio }}</p>
+            </div>
+
+            <div class="date-box">
+                <span class="dot red"></span> <strong>Fin:</strong>
+                <p>{{ datos.fecha_fin }}</p>
+            </div>
+        </div>
+
+        <div class="days-box">{{ datos.dias }} días de alquiler</div>
+    </section>
+
+    <!-- CLIENTE -->
+    <section class="confirm-section">
+        <h3>🧑 Cliente</h3>
+
+        <div class="client-box">
+
+            {% if usuario.foto_perfil %}
+                <img src="{{ usuario.foto_perfil.url }}" 
+                     class="client-photo"
+                     style="width:75px; height:75px; border-radius:50%; object-fit:cover; border:3px solid #6c2bf0;">
+            {% else %}
+                <img src="{% static 'img/perfil.png' %}" 
+                     class="client-photo"
+                     style="width:75px; height:75px; border-radius:50%; object-fit:cover;">
+            {% endif %}
+
+            <div>
+                <h4>{{ usuario.nombre }}</h4>
+                <p>{{ usuario.correo }}</p>
+                <p>{{ usuario.telefono }}</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRECIOS -->
+    <section class="confirm-section">
+        <h3>💰 Detalles del Pago</h3>
+
+        <div class="price-row">
+            <span>Tarifa × {{ datos.dias }} días</span>
+            <span>${{ vehiculo.precio_dia|floatformat:0 }} × {{ datos.dias }}</span>
+        </div>
+
+        <div class="total-row">
+            <span>Total</span>
+            <span class="total">${{ datos.valor_total }}</span>
+        </div>
+    </section>
+
+    <div class="btn-row">
+        <a href="{% url 'descargar_pdf' %}" class="btn-secondary">📄 Descargar Recibo</a>
+
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn-primary">✅ Confirmar Reserva</button>
+        </form>
+
+        <a href="{% url 'home' %}" class="btn-primary">🏠 Volver al Inicio</a>
+    </div>
+
+</div>
+
+</body>
+</html>

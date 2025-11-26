@@ -6,50 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar Sesión - ClickCar</title>
     <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+
+    <style>
+        .mensaje-login {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 15px;
+            animation: fade 0.4s ease-in-out;
+            text-align: center;
+        }
+        .mensaje-error {
+            background: #ffdddd;
+            color: #b91c1c;
+            border: 1px solid #e11d48;
+        }
+        .mensaje-ok {
+            background: #ddffdd;
+            color: #15803d;
+            border: 1px solid #16a34a;
+        }
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(-4px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
+
 <body>
 
-    <!-- === HEADER IGUAL AL HOME === -->
-    <header>
-        <nav>
-            <div class="logo" style="display: flex; align-items: center; gap: 8px;">
-                <a href="{% url 'home' %}">
-                    <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
-                </a>
-                <span style="font-size: 26px; font-weight: bold; color: #4A47FF;">ClickCar</span>
-            </div>
+<header>
+    <nav>
+        <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+            </a>
+            <span style="font-size: 26px; font-weight: bold; color: #4A47FF;">ClickCar</span>
+        </div>
 
-            <ul class="menu">
-                <li><a href="{% url 'home' %}">Inicio</a></li>
-                {% if request.user.is_authenticated %}
-                    <li><a href="{% url 'exit' %}">Salir</a></li>
-                {% else %}
-                    <li><a href="{% url 'login' %}">Ingresar</a></li>
+        <ul class="menu">
+            {% if request.session.usuario_id %}
+                <li><a href="{% url 'exit' %}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+                <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<div class="login-page">
+    <form method="post" action="{% url 'login' %}" class="login-form">
+        {% csrf_token %}
+        <h1>Iniciar Sesión</h1>
+
+        <!-- MENSAJES SOLO PARA LOGIN -->
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'login' in message.tags %}
+                    <div class="mensaje-login mensaje-{{ message.tags }}">
+                        {{ message }}
+                    </div>
                 {% endif %}
-            </ul>
-        </nav>
-    </header>
+            {% endfor %}
+        {% endif %}
 
-  <form method="post" action="{% url 'login' %}" class="login-form">
-    {% csrf_token %}
-    <h1>Iniciar Sesión</h1>
+        <label>Correo</label>
+        <input type="text" name="username" placeholder="Correo" required>
 
-    {% if messages %}
-        {% for message in messages %}
-            <p class="{% if message.tags == 'error' %}mensaje-error{% else %}mensaje-ok{% endif %}">
-                {{ message }}
-            </p>
-        {% endfor %}
-    {% endif %}
+        <label>Contraseña</label>
+        <input type="password" name="password" placeholder="Contraseña" required>
 
-    <label for="username">Correo</label>
-    <input type="text" name="username" placeholder="Correo" required>
+        <button type="submit">Ingresar</button>
 
-    <label for="password">Contraseña</label>
-    <input type="password" name="password" placeholder="Contraseña" required>
-
-    <button type="submit">Ingresar</button>
-</form>
+        <a href="{% url 'olvide_password' %}">¿Olvidaste tu contraseña?</a>
+    </form>
+</div>
 
 </body>
 </html>

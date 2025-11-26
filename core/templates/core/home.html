@@ -1,15 +1,67 @@
-
 {% extends 'core/base.html' %}
+{% load static %}
 
 {% block content %}
 
-<h3>Inicio</h3>
-{% if request.user.is_authenticated %}
-        <h4>
-            {{ user.username | upper }}, bienvenido a la plataforma.
-        </h4>
+<!-- 🔥 Sección inicial (solo en HOME) -->
+<section class="contenido">
+    <div class="texto">
+        <h2>Encuentra el auto perfecto</h2>
+        <p>Alquila vehículos de alta calidad para cualquier ocasión. Desde autos económicos hasta deportivos de lujo.</p>
+    </div>
 
-        {% endif %}
+    <div class="imagen">
+        <img src="{% static 'img/tasman.PNG' %}" alt="Auto de lujo">
+    </div>
+</section>
 
+<!-- 🔥 Lista de vehículos -->
+<section class="productos">
+    <h3>Vehículos Disponibles</h3>
 
-{% endblock %} 
+    <div class="grid">
+        {% for v in vehiculos %}
+            <div class="card">
+
+                {% if v.foto %}
+                    <img src="{{ v.foto.url }}"
+                         alt="{{ v.marca }}"
+                         style="width:200px; height:130px; object-fit:cover; border-radius:10px;">
+                {% else %}
+                    <img src="{% static 'img/car_default.png' %}"
+                         alt="Sin imagen"
+                         style="width:200px; height:130px; object-fit:cover; opacity:0.5;">
+                {% endif %}
+
+                <h4>{{ v.marca }} {{ v.modelo }}</h4>
+
+                <p><strong>Categoría:</strong> {{ v.categoria }}</p>
+                <p><strong>Año:</strong> {{ v.anio }}</p>
+                <p><strong>Combustible:</strong> {{ v.combustible }}</p>
+                <p><strong>Asientos:</strong> {{ v.asientos }}</p>
+                <p><strong>Color:</strong> {{ v.color }}</p>
+                <p><strong>Precio:</strong> ${{ v.precio_dia }} / día</p>
+
+                {% if v.descripcion %}
+                    <p><em>{{ v.descripcion }}</em></p>
+                {% endif %}
+
+                {% if request.session.usuario_id %}
+                    <a href="{% url 'reserva' v.id_auto %}" class="btn-reservar-card">
+                        Reservar
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn-reservar-card">
+                        Reservar
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% empty %}
+            <p>No hay vehículos disponibles.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

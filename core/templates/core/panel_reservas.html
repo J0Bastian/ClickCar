@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Reservas</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'visualizar_perfiles' %}">Administracion</a></li>
+            <li><a href="{% url 'admin_reservas' %}">Reservas</a></li>
+            <li><a href="{% url 'products' %}">Vehiculos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- 🔥 SISTEMA DE MENSAJES SOLO PARA ADMIN RESERVAS -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        {% if 'admin_reservas' in message.tags %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="panel-admin">
+
+    <div class="panel-header">
+        <h2>Panel de Administración</h2>
+        <p>Gestionar usuarios y visualizar actividad</p>
+    </div>
+
+    <h3>Lista de Reservas</h3>
+    <p>Consulta todas las reservas registradas en el sistema</p>
+
+    <table class="panel-table">
+        <tr>
+            <th>Cliente</th>
+            <th>Vehículo</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Total</th>
+            <th>Acciones</th>
+        </tr>
+
+        {% for r in reservas %}
+        <tr>
+            <td>{{ r.usuario.nombre }}</td>
+            <td>{{ r.auto.marca }} {{ r.auto.modelo }}</td>
+            <td>{{ r.fecha_inicio }}</td>
+            <td>{{ r.fecha_fin }}</td>
+            <td>${{ r.valor_total }}</td>
+            <td>
+                <a href="{% url 'detalle_reserva' r.id_reserva %}" class="btn-ver">Ver Detalles</a>
+                <a href="{% url 'pdf_reserva' r.id_reserva %}" class="btn-ver">📄 PDF</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

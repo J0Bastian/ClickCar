@@ -1,0 +1,143 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle Reserva {{ reserva.id_reserva }}</title>
+
+    <style>
+        body { font-family: Arial; margin: 25px; }
+        .confirm-header { background: #6c2bf0; color:white; padding:15px; border-radius:8px; display:flex; justify-content:space-between; }
+        .confirm-title-small { font-size:14px; opacity:.8; margin:0; }
+        .confirm-code { font-size:22px; font-weight:bold; margin:0; }
+        .confirm-date { text-align:right; }
+
+        .confirm-section { margin-top:20px; padding:12px; border:1px solid #ccc; border-radius:8px; }
+        h3 { color:#6c2bf0; margin-top:0; }
+        .vehicle-info { display:flex; gap:12px; }
+        img { border-radius:8px; }
+        .price-row { display:flex; justify-content:space-between; }
+        .total { font-size:20px; color:#6c2bf0; font-weight:bold; }
+
+        .btn-pdf {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 10px 18px;
+            background: #4A47FF;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-pdf:hover { background: #3633d9; }
+    </style>
+</head>
+
+<body>
+
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        {% if 'reservas' in message.tags %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<section class="confirm-container">
+
+    <div class="confirm-header">
+        <div>
+            <p class="confirm-title-small">Reserva</p>
+            <p class="confirm-code">#{{ reserva.id_reserva }}</p>
+        </div>
+        <p class="confirm-date">{{ reserva.fecha_reserva|date:"d/m/Y H:i" }}</p>
+    </div>
+
+    <div class="confirm-section">
+        <h3>Vehículo</h3>
+
+        <div class="vehicle-info">
+
+            {% if reserva.auto.foto %}
+                <img src="{{ reserva.auto.foto.url }}" width="220"
+                     style="height:140px; object-fit:cover; border-radius:12px;">
+            {% else %}
+                <img src="{% static 'img/car_default.png' %}" width="220"
+                     style="height:140px; object-fit:cover; opacity:0.6; border-radius:12px;">
+            {% endif %}
+
+            <div class="vehicle-details">
+                <h2>{{ reserva.auto.marca }} {{ reserva.auto.modelo }}</h2>
+                <p><strong>Año:</strong> {{ reserva.auto.anio }}</p>
+                <p><strong>Categoría:</strong> {{ reserva.auto.categoria }}</p>
+                <p><strong>Combustible:</strong> {{ reserva.auto.combustible }}</p>
+                <p><strong>Asientos:</strong> {{ reserva.auto.asientos }}</p>
+                <p><strong>Color:</strong> {{ reserva.auto.color }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirm-section">
+        <h3>Fechas</h3>
+
+        <div class="date-row">
+            <div>
+                <strong>Inicio:</strong><br>
+                {{ reserva.fecha_inicio }}
+            </div>
+
+            <div>
+                <strong>Fin:</strong><br>
+                {{ reserva.fecha_fin }}
+            </div>
+        </div>
+    </div>
+
+    <!-- ⭐ CLIENTE CON FOTO -->
+    <div class="confirm-section">
+        <h3>🧑 Cliente</h3>
+
+        <div style="display:flex; align-items:center; gap:15px;">
+
+            {% if reserva.usuario.foto_perfil %}
+                <img src="{{ reserva.usuario.foto_perfil.url }}"
+                     alt="Foto del usuario"
+                     style="width:90px; height:90px; border-radius:50%;
+                            object-fit:cover; border:3px solid #6c2bf0;">
+            {% else %}
+                <img src="{% static 'img/user_avatar.png' %}"
+                     alt="Sin foto"
+                     style="width:90px; height:90px; border-radius:50%;
+                            object-fit:cover; opacity:0.8; border:3px solid #6c2bf0;">
+            {% endif %}
+
+            <div>
+                <p style="font-size:18px; font-weight:bold; margin:0;">
+                    {{ reserva.usuario.nombre }}
+                </p>
+                <p style="margin:3px 0;">📧 {{ reserva.usuario.correo }}</p>
+                <p style="margin:3px 0;">📱 {{ reserva.usuario.telefono }}</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="confirm-section">
+        <h3>Precio</h3>
+
+        <div class="price-row">
+            <span>Total</span>
+            <span class="total">${{ reserva.valor_total }}</span>
+        </div>
+    </div>
+
+    <a href="{% url 'pdf_reserva' reserva.id_reserva %}" class="btn-pdf">
+        Descargar PDF
+    </a>
+
+</section>
+
+</body>
+</html>

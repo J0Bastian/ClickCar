@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de {{ usuario.nombre }} - ClickCar</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'products' %}">Productos</a></li>
+
+            {% if request.session.usuario_id %}
+                {% if request.session.usuario_rol == "admin" %}
+                    <li><a href="{% url 'visualizar_perfiles' %}">Perfiles</a></li>
+                    <li><a href="{% url 'admin_reservas' %}">Reservas</a></li>
+                {% else %}
+                    <!-- 🔥 CORREGIDO: esta era la línea con error -->
+                    <li><a href="{% url 'perfil_usuario' request.session.usuario_id %}">Mi Perfil</a></li>
+
+                    <li><a href="{% url 'mis_reservas' %}">Mis Reservas</a></li>
+                {% endif %}
+                <li><a href="{% url 'exit' %}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+                <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+{% if messages %}
+    <div style="max-width:800px; margin: 20px auto;">
+        {% for message in messages %}
+            {% if 'perfil_usuario' in message.tags %}
+                <div class="msg {{ message.tags }}" style="margin-bottom:12px; text-align:center;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<section class="perfil-container">
+
+    <div class="perfil-card">
+        <h2>Información Personal</h2>
+
+        <div class="perfil-info">
+
+            {% if usuario.foto_perfil %}
+                <img src="{{ usuario.foto_perfil.url }}"
+                     alt="Foto de perfil"
+                     class="perfil-avatar"
+                     style="width:150px; height:150px; object-fit:cover; border-radius:50%; border:4px solid #6c2bf0; box-shadow:0 3px 10px rgba(0,0,0,.25);">
+            {% else %}
+                <img src="{% static 'img/user_avatar.png' %}"
+                     alt="Sin foto"
+                     class="perfil-avatar"
+                     style="width:150px; height:150px; object-fit:cover; border-radius:50%; border:4px solid #ccc; box-shadow:0 3px 10px rgba(0,0,0,.25);">
+            {% endif %}
+
+            <h3>{{ usuario.nombre }}</h3>
+
+            <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+            <p><strong>Teléfono:</strong> {{ usuario.telefono }}</p>
+            <p><strong>Fecha Registro:</strong> {{ usuario.fecha_registro|date:"d/m/Y" }}</p>
+            <p><strong>Rol:</strong> {{ usuario.nombre_rol }}</p>
+
+        </div>
+    </div>
+
+    {% if request.session.usuario_rol != "admin" %}
+        <div class="perfil-buttons">
+
+            <a href="{% url 'mis_reservas' %}" class="btn-edit">Ver mis reservas</a>
+
+            <!-- 🔥 BOTÓN PARA EDITAR PERFIL DEL CLIENTE -->
+            <a href="{% url 'editar_perfil' %}" class="btn-edit" style="background:#6c2bf0; color:white;">
+                Editar mi perfil
+            </a>
+
+        </div>
+    {% endif %}
+
+    {% if request.session.usuario_rol == "admin" %}
+        <div class="perfil-buttons">
+
+            <a href="{% url 'editar_usuario' usuario.id_usuario %}" class="btn-edit">
+                Editar
+            </a>
+
+            <form action="{% url 'eliminar_usuario' usuario.id_usuario %}" method="POST" 
+                  onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">Eliminar</button>
+            </form>
+
+        </div>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificar Código</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'login' %}">Ingresar</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- 🔥 SISTEMA DE MENSAJES EXCLUSIVO PARA VERIFICAR CÓDIGO -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        {% if 'verificar_codigo' in message.tags %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="login-page">
+    <form method="post" class="login-form">
+        {% csrf_token %}
+
+        <h1>Ingresar Código</h1>
+
+        <p>Escribe el código que enviamos a tu correo.</p>
+
+        <label for="codigo">Código</label>
+        <input type="text" name="codigo" placeholder="123456" required>
+
+        <button type="submit">Validar</button>
+
+    </form>
+</div>
+
+</body>
+</html>

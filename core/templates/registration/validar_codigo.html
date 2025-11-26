@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificar Código - ClickCar</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+    <!-- HEADER SIMPLE -->
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+                </a>
+            </div>
+
+            <ul class="menu">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- FORMULARIO -->
+    <div class="login-page">
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            <h1>Verificación</h1>
+
+            <p style="text-align:center;color:#555;">
+                Ingresa el código que enviamos a tu correo.
+            </p>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="{% if message.tags == 'error' %}mensaje-error{% else %}mensaje-ok{% endif %}">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            {% endif %}
+
+            <label for="codigo">Código</label>
+            <input type="text" name="codigo" placeholder="123456" required>
+
+            <button type="submit">Validar Código</button>
+
+            <p style="text-align:center; margin-top:10px;">
+                ¿No recibiste el código? <a href="#">Reenviar</a>
+            </p>
+        </form>
+    </div>
+
+</body>
+</html>

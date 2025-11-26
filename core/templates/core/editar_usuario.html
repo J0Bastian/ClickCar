@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Usuario</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo">
+            </a>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+            <li><a href="{% url 'visualizar_perfiles' %}">Administracion</a></li>
+            <li><a href="{% url 'products' %}">Vehiculos</a></li>
+            <li><a href="{% url 'exit' %}">Salir</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="login-page">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'editar_usuario' in message.tags %}
+                <div class="msg {{ message.tags }}" style="margin-bottom:15px; text-align:center;">
+                    {{ message }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <div class="login-form" style="width: 420px; text-align: left;">
+        <h1 style="text-align:center;">Editar Usuario</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label>Nombre</label>
+            <input type="text" name="nombre" value="{{ usuario.nombre }}" required>
+
+            <label>Correo</label>
+            <input type="email" name="correo" value="{{ usuario.correo }}" required>
+
+            <label>Teléfono</label>
+            <input type="text" name="telefono" value="{{ usuario.telefono }}" required>
+
+            <label>Rol</label>
+            <select name="rol" class="input-select">
+                <option value="cliente" {% if usuario.nombre_rol == "cliente" %}selected{% endif %}>Cliente</option>
+                <option value="admin" {% if usuario.nombre_rol == "admin" %}selected{% endif %}>Administrador</option>
+            </select>
+
+            <!-- 🔥 FOTO DE PERFIL -->
+            <label>Foto de Perfil</label>
+
+            <!-- Vista previa -->
+            <div style="text-align:center; margin-bottom:10px;">
+                {% if usuario.foto_perfil %}
+                    <img id="preview" src="{{ usuario.foto_perfil.url }}" 
+                         style="width:120px; height:120px; border-radius:50%; object-fit:cover;">
+                {% else %}
+                    <img id="preview" src="{% static 'img/user_avatar.png' %}" 
+                         style="width:120px; height:120px; border-radius:50%; object-fit:cover; opacity:0.8;">
+                {% endif %}
+            </div>
+
+            <input type="file" name="foto_perfil" accept="image/*" onchange="previewImage(event)">
+
+            <label style="display:flex;align-items:center;gap:6px;font-weight:bold;">
+                <input type="checkbox" name="activo" {% if usuario.activo %}checked{% endif %}>
+                Activo
+            </label>
+
+            <button type="submit">Guardar Cambios</button>
+        </form>
+
+    </div>
+
+</section>
+
+<!-- 🔥 Script para vista previa -->
+<script>
+function previewImage(event) {
+    const reader = new FileReader();
+    reader.onload = function(){
+        document.getElementById('preview').src = reader.result;
+    };
+    reader.readAsDataURL(event.target.files[0]);
+}
+</script>
+
+</body>
+</html>

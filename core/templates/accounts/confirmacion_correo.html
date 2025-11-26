@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 550px;
+            background: #ffffff;
+            margin: 30px auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px;
+            background: #1e3a8a;
+            color: white;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .car-info {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            padding: 12px 18px;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #555;
+            font-size: 13px;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h2>Reserva Confirmada</h2>
+            <p>ClickCar Rent Service</p>
+        </div>
+
+        <p>Hola <strong>{{ usuario.nombre }}</strong>,</p>
+        <p>Tu reserva ha sido <strong>confirmada exitosamente</strong>. Aquí tienes el resumen:</p>
+
+        <div class="car-info">
+            <p><strong>Vehículo:</strong> {{ vehiculo.marca }} {{ vehiculo.modelo }}</p>
+            <p><strong>Fecha de inicio:</strong> {{ fecha_inicio }}</p>
+            <p><strong>Fecha de finalización:</strong> {{ fecha_fin }}</p>
+            <p><strong>Total pagado:</strong> ${{ valor_total }}</p>
+        </div>
+
+        <p>Puedes descargar tu comprobante PDF directamente desde tu panel o el botón de abajo:</p>
+
+        <p style="text-align:center;">
+            <a class="btn" href="https://clickcarapp.com/mis-reservas">
+                Ver mis reservas
+            </a>
+        </p>
+
+        <div class="footer">
+            <p>Gracias por confiar en ClickCar 🚘</p>
+            <p>© 2025 ClickCar — Todos los derechos reservados.</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

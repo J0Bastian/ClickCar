@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva Cancelada</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f7;
+            padding: 20px;
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #d9534f;
+            text-align: center;
+        }
+
+        .info {
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #6c2bf0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Reserva Cancelada</h1>
+
+    <p>Hola <strong>{{ usuario.nombre }}</strong>,</p>
+
+    <p>Lamentamos informarte que tu reserva ha sido <strong>cancelada exitosamente</strong>.</p>
+
+    <div class="info">
+        <p><strong>ID de reserva:</strong> #{{ reserva.id_reserva }}</p>
+        <p><strong>Vehículo:</strong> {{ reserva.auto.marca }} {{ reserva.auto.modelo }}</p>
+        <p><strong>Fechas:</strong> {{ reserva.fecha_inicio }} → {{ reserva.fecha_fin }}</p>
+        <p><strong>Total:</strong> ${{ reserva.valor_total }}</p>
+    </div>
+
+    <p>
+        Si la cancelación fue un error, puedes volver a realizar una reserva desde nuestro sitio web.
+    </p>
+
+    <div class="footer">
+        © 2025 ClickCar — Todos los derechos reservados.
+    </div>
+
+</div>
+
+</body>
+</html>

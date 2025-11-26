@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registro - ClickCar</title>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'img/LogoClickCar.png' %}" alt="Logo ClickCar">
+            </a>
+            <span style="font-size: 26px; font-weight: bold; color: #4A47FF;">ClickCar</span>
+        </div>
+
+        <ul class="menu">
+            <li><a href="{% url 'home' %}">Inicio</a></li>
+
+            {% if request.session.usuario_id %}
+                <li><a href="{% url 'exit' %}">Salir</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Ingresar</a></li>
+                <li><a href="{% url 'registro' %}">Registrarse</a></li>
+            {% endif %}
+        </ul>
+
+    </nav>
+</header>
+
+<!-- 🔥 SISTEMA DE MENSAJES EXCLUSIVO PARA REGISTRO -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+        {% if 'registro' in message.tags %}
+            <div class="msg {{ message.tags }}">{{ message }}</div>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="login-page">
+    <form method="post" action="{% url 'registro' %}" class="login-form">
+        {% csrf_token %}
+        <h1>Crear Cuenta</h1>
+
+        <label>Nombre</label>
+        <input type="text" name="nombre" placeholder="Tu nombre completo" required>
+
+        <label>Correo</label>
+        <input type="email" name="correo" placeholder="Correo electrónico" required>
+
+        <label>Contraseña</label>
+        <input type="password" name="contrasena" placeholder="Crear contraseña" required>
+
+        <label>Teléfono</label>
+        <input type="text" name="telefono" placeholder="Número de contacto">
+
+        <button type="submit">Registrarse</button>
+
+        <p style="text-align:center; margin-top:15px;">
+            ¿Ya tienes cuenta?
+            <a href="{% url 'login' %}">Iniciar sesión</a>
+        </p>
+    </form>
+</div>
+
+</body>
+</html>

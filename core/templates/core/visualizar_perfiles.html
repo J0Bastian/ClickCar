@@ -1,0 +1,172 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="titulo-panel" style="text-align:center; margin-bottom:25px;">Panel de Administración</h1>
+
+
+<!-- ==============================
+     SECCIÓN: USUARIOS
+================================== -->
+<h2 style="margin: 20px 0; text-align:center;">👥 Usuarios Registrados</h2>
+
+<div class="grid-admin">
+
+    {% for u in usuarios %}
+    <div class="admin-card">
+
+        <!-- Foto del usuario -->
+        {% if u.foto_perfil %}
+            <img src="{{ u.foto_perfil.url }}" class="admin-avatar">
+        {% else %}
+            <img src="{% static 'img/user_avatar.png' %}" class="admin-avatar">
+        {% endif %}
+
+        <h3>{{ u.nombre }}</h3>
+        <p class="admin-email">{{ u.correo }}</p>
+        <p class="admin-rol">{{ u.nombre_rol|capfirst }}</p>
+
+        <div class="admin-btns">
+            <a href="{% url 'perfil_usuario' u.id_usuario %}" class="btn-admin-ver">Ver</a>
+            <a href="{% url 'editar_usuario' u.id_usuario %}" class="btn-admin-editar">Editar</a>
+            <form action="{% url 'eliminar_usuario' u.id_usuario %}" 
+                  method="POST" 
+                  onsubmit="return confirm('¿Seguro que deseas eliminar este usuario?');">
+                {% csrf_token %}
+                <button type="submit" class="btn-admin-eliminar">Eliminar</button>
+            </form>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+
+<!-- ==============================
+     SECCIÓN: VEHÍCULOS
+================================== -->
+
+<h2 style="margin: 40px 0 15px; text-align:center;">🚗 Gestión de Vehículos</h2>
+
+<div style="text-align:center; margin-bottom:20px;">
+    <a href="{% url 'agregar_vehiculo' %}" class="btn-agregar-premium">➕ Agregar Vehículo</a>
+</div>
+
+<div class="grid-admin">
+
+    {% for v in vehiculos %}
+    <div class="admin-card">
+
+        <!-- Miniatura del vehículo -->
+        {% if v.foto %}
+            <img src="{{ v.foto.url }}" class="admin-car-thumb">
+        {% else %}
+            <img src="{% static 'img/car_default.png' %}" class="admin-car-thumb">
+        {% endif %}
+
+        <h3>{{ v.marca }} {{ v.modelo }}</h3>
+        <p class="admin-email">{{ v.categoria }}</p>
+        <p class="admin-rol">{{ v.precio_dia }} / día</p>
+
+        <div class="admin-btns">
+            <a href="{% url 'editar_vehiculo' v.id_auto %}" class="btn-admin-editar">Editar</a>
+            <a href="{% url 'eliminar_vehiculo' v.id_auto %}" class="btn-admin-eliminar"
+               onclick="return confirm('¿Eliminar este vehículo?');">Eliminar</a>
+        </div>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+
+<style>
+/* ======= GRID======= */
+.grid-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+    padding: 10px 30px;
+}
+
+/* ======= TARJETAS PREMIUM ======= */
+.admin-card {
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    box-shadow: 0px 4px 14px rgba(0,0,0,0.12);
+    transition: transform .2s;
+}
+.admin-card:hover {
+    transform: translateY(-4px);
+}
+
+/* ======= FOTO PERFIL PREMIUM ======= */
+.admin-avatar {
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    object-fit:cover;
+    margin-bottom:10px;
+    border:3px solid #6c2bf0;
+    box-shadow:0 3px 8px rgba(0,0,0,.15);
+}
+
+/* ======= MINIATURA VEHÍCULO ======= */
+.admin-car-thumb {
+    width:100%;
+    height:140px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-bottom:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+}
+
+/* Texto */
+.admin-email { font-size:14px; color:#666; margin:5px 0; }
+.admin-rol { font-weight:bold; color:#6c2bf0; }
+
+/* ======= BOTONES ======= */
+.admin-btns {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    margin-top:12px;
+}
+
+.btn-admin-ver,
+.btn-admin-editar,
+.btn-admin-eliminar,
+.btn-agregar-premium {
+    padding:8px 14px;
+    border-radius:8px;
+    border:none;
+    text-decoration:none;
+    font-weight:bold;
+    color:white;
+}
+
+/* Botón agregar */
+.btn-agregar-premium {
+    background:#2ecc71;
+    padding:10px 20px;
+}
+
+/* Ver */
+.btn-admin-ver { background:#3498db; }
+
+/* Editar */
+.btn-admin-editar { background:#9b59b6; }
+
+/* Eliminar */
+.btn-admin-eliminar {
+    background:#e74c3c;
+    cursor:pointer;
+    border:none;
+}
+</style>
+
+{% endblock %}

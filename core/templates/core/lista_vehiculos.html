@@ -1,0 +1,70 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<h1 class="titulo-panel">Gestión de Vehículos</h1>
+
+<div class="table-container">
+<table class="panel-table">
+    <thead>
+        <tr>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Categoría</th>
+            <th>Año</th>
+            <th>Color</th>
+            <th>Asientos</th>
+            <th>Precio/Día</th>
+            <th>Combustible</th>
+            <th>Foto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for v in vehiculos %}
+        <tr>
+            <td>{{ v.marca }}</td>
+            <td>{{ v.modelo }}</td>
+            <td>{{ v.categoria }}</td>
+            <td>{{ v.anio }}</td>
+            <td>{{ v.color }}</td>
+            <td>{{ v.asientos }}</td>
+            <td>${{ v.precio_dia }}</td>
+            <td>{{ v.combustible }}</td>
+
+            <td>
+                {% if v.foto %}
+                    <img src="{{ v.foto.url }}"
+                         style="width:80px; height:60px; object-fit:cover; 
+                                border-radius:8px; border:1px solid #ccc; 
+                                box-shadow:0 2px 5px rgba(0,0,0,0.15);">
+                {% else %}
+                    <img src="{% static 'img/car_default.png' %}"
+                         style="width:80px; height:60px; object-fit:cover; 
+                                border-radius:8px; border:1px solid #ccc; opacity:0.5;">
+                {% endif %}
+            </td>
+
+            <td>
+
+                <!-- BOTÓN EDITAR -->
+                <a href="{% url 'editar_vehiculo' v.id_auto %}">
+                    <button class="btn-ver" style="margin-bottom:5px;">Editar</button>
+                </a>
+                <br>
+
+                <!-- BOTÓN ELIMINAR -->
+                <a href="{% url 'eliminar_vehiculo' v.id_auto %}">
+                    <button class="btn-eliminar">Eliminar</button>
+                </a>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

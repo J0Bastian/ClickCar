@@ -8,7 +8,8 @@
             "contrasena": "admin123",
             "telefono": "3101234567",
             "fecha_registro": "2025-11-11T10:00:00Z",
-            "activo": true
+            "activo": true,
+            "nombre_rol": "admin"
         }
     },
     {
@@ -20,7 +21,8 @@
             "contrasena": "juan123",
             "telefono": "3119876543",
             "fecha_registro": "2025-11-10T15:30:00Z",
-            "activo": true
+            "activo": true,
+            "nombre_rol": "cliente"
         }
     },
     {
@@ -32,6 +34,260 @@
             "contrasena": "maria123",
             "telefono": "3007654321",
             "fecha_registro": "2025-11-09T09:45:00Z",
+            "activo": true,
+            "nombre_rol": "cliente"
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 5,
+        "fields": {
+            "nombre": "santiago",
+            "correo": "115280santiagopardo@gmail.com",
+            "contrasena": "123456",
+            "telefono": "3203460173",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 6,
+        "fields": {
+            "nombre": "josue alejandro guzman",
+            "correo": "luisitoer27@gmail.com",
+            "contrasena": "luis1",
+            "telefono": "3215363759",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 7,
+        "fields": {
+            "nombre": "joan sebastian huergo",
+            "correo": "huergojhoan@gmail.com",
+            "contrasena": "sebas123",
+            "telefono": "3215363758",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 1,
+        "fields": {
+            "nombre": "A",
+            "correo": "a@example.com",
+            "contrasena": "111",
+            "telefono": "333",
+            "activo": true
+        }
+    },
+    {
+        "model": "core.usuario",
+        "pk": 13,
+        "fields": {
+            "nombre": "felipe alaska",
+            "correo": "luisitoer27@gmail.com",
+            "contrasena": "luis1234",
+            "telefono": "3175699197",
             "activo": true
         }
     }
