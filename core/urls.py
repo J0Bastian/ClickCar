@@ -17,7 +17,7 @@ urlpatterns = [
     path('logout/', exit, name='exit'),
 
     # Reservas
-    path('reserva/<int:id>/', reserva, name='reserva'),
+    path('reserva/<int:id_auto>/', reserva, name='reserva'),
     path('confirmar/', confirmar_reserva, name='confirmar_reserva'),
     path("mis-reservas/", mis_reservas, name="mis_reservas"),
     path("reserva/<int:id_reserva>/detalle/", ver_detalle_reserva, name="detalle_reserva"),

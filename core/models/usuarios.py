@@ -7,7 +7,7 @@ class Usuario(models.Model):
     contrasena = models.CharField(max_length=255)
     telefono = models.CharField(max_length=15, null=True, blank=True)
 
-    # CAMPO CORRECTO PARA SUBIR IMÁGENES
+    # subir las imagenes
     foto_perfil = models.ImageField(upload_to='perfiles/', null=True, blank=True)
 
     fecha_registro = models.DateTimeField(auto_now_add=True)

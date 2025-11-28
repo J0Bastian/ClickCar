@@ -31,7 +31,7 @@
 
     <!-- VEHÍCULO -->
     <section class="confirm-section">
-        <h3>🚗 Información del Vehículo</h3>
+        <h3> Información del Vehículo</h3>
 
         <div class="vehicle-info">
 
@@ -61,7 +61,7 @@
 
     <!-- PERIODO -->
     <section class="confirm-section">
-        <h3>📅 Periodo</h3>
+        <h3>Periodo</h3>
 
         <div class="date-row">
             <div class="date-box">
@@ -80,7 +80,7 @@
 
     <!-- CLIENTE -->
     <section class="confirm-section">
-        <h3>🧑 Cliente</h3>
+        <h3>Cliente</h3>
 
         <div class="client-box">
 
@@ -104,7 +104,7 @@
 
     <!-- PRECIOS -->
     <section class="confirm-section">
-        <h3>💰 Detalles del Pago</h3>
+        <h3> Detalles del Pago</h3>
 
         <div class="price-row">
             <span>Tarifa × {{ datos.dias }} días</span>
@@ -118,14 +118,14 @@
     </section>
 
     <div class="btn-row">
-        <a href="{% url 'descargar_pdf' %}" class="btn-secondary">📄 Descargar Recibo</a>
+        <a href="{% url 'descargar_pdf' %}" class="btn-secondary">Descargar Recibo</a>
 
         <form method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn-primary">✅ Confirmar Reserva</button>
+            <button type="submit" class="btn-primary">Confirmar Reserva</button>
         </form>
 
-        <a href="{% url 'home' %}" class="btn-primary">🏠 Volver al Inicio</a>
+        <a href="{% url 'home' %}" class="btn-primary">Volver al Inicio</a>
     </div>
 
 </div>

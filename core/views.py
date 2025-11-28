@@ -16,6 +16,9 @@ from xhtml2pdf import pisa
 from .models.vehiculo import Vehiculo
 from .models.usuarios import Usuario
 from .models.reserva import Reserva
+from django.template.loader import get_template
+from django.http import HttpResponse
+from xhtml2pdf import pisa
 
 logging.getLogger("xhtml2pdf").setLevel(logging.ERROR)
 
@@ -37,28 +40,24 @@ def exit(request):
     return redirect("home")
 
 
-# ============================================================
-#                   RESERVA DE VEHÍCULOS
-# ============================================================
 
-def reserva(request, id):
-    vehiculo = get_object_or_404(Vehiculo, id_auto=id)
+def reserva(request, id_auto):
+    vehiculo = get_object_or_404(Vehiculo, id_auto=id_auto)
 
     if request.method == "POST":
-        if "usuario_id" not in request.session and "id_usuario" not in request.session:
-            messages.error(request, "Debes iniciar sesión para reservar.", extra_tags="reserva")
+
+        usuario_id = request.session.get("usuario_id")
+        if not usuario_id:
             return redirect("login")
 
         try:
             fecha_inicio = datetime.strptime(request.POST["fecha_inicio"], "%Y-%m-%d").date()
             fecha_fin = datetime.strptime(request.POST["fecha_fin"], "%Y-%m-%d").date()
         except:
-            messages.error(request, "Fechas inválidas.", extra_tags="reserva")
-            return redirect("reserva", id=id)
+            return redirect("reserva", id_auto=id_auto)
 
         if fecha_fin < fecha_inicio:
-            messages.error(request, "La fecha final no puede ser menor que la inicial.", extra_tags="reserva")
-            return redirect("reserva", id=id)
+            return redirect("reserva", id_auto=id_auto)
 
         conflicto = Reserva.objects.filter(
             auto=vehiculo,
@@ -67,8 +66,7 @@ def reserva(request, id):
         ).exists()
 
         if conflicto:
-            messages.error(request, "Este vehículo NO está disponible en esas fechas.", extra_tags="reserva")
-            return redirect("reserva", id=id)
+            return redirect("reserva", id_auto=id_auto)
 
         dias = (fecha_fin - fecha_inicio).days + 1
         valor_total = dias * vehiculo.precio_dia
@@ -78,17 +76,18 @@ def reserva(request, id):
             "fecha_inicio": str(fecha_inicio),
             "fecha_fin": str(fecha_fin),
             "dias": dias,
-            "valor_total": float(valor_total)
+            "valor_total": float(valor_total),
         }
+        request.session.modified = True
+        request.session.save()
 
         return redirect("confirmar_reserva")
 
     return render(request, "core/reserva.html", {"vehiculo": vehiculo})
 
 
-# ============================================================
-#                   CONFIRMAR RESERVA
-# ============================================================
+
+
 
 def confirmar_reserva(request):
     if "datos_reserva" not in request.session:
@@ -116,10 +115,10 @@ def confirmar_reserva(request):
             estado="confirmada",
         )
 
-        # ❌ Limpiar la sesión
+        # Limpiar la sesión
         del request.session["datos_reserva"]
 
-        # 📧 Correo en HTML
+        # Correo en HTML
         html_template = get_template("accounts/confirmacion_correo.html")
         html_message = html_template.render({
             "usuario": usuario,
@@ -141,14 +140,14 @@ def confirmar_reserva(request):
         messages.success(request, "Reserva creada exitosamente.", extra_tags="confirmar")
         return redirect("mis_reservas")
 
-    # GET → mostrar resumen
+    # GET mostrar resumen
     dias = data["dias"]
     subtotal = Decimal(str(vehiculo.precio_dia)) * Decimal(str(dias)) / Decimal("1.19")
     iva = Decimal(str(data["valor_total"])) - subtotal
 
     return render(request, "core/confirmar_reserva.html", {
         "vehiculo": vehiculo,
-        "usuario": usuario,   # 🔥 AHORA SÍ SE ENVÍA
+        "usuario": usuario, 
         "datos": {
             **data,
             "subtotal": round(subtotal, 2),
@@ -158,9 +157,6 @@ def confirmar_reserva(request):
 
 
 
-# ============================================================
-#                   LOGIN
-# ============================================================
 
 def login_usuario(request):
 
@@ -191,10 +187,6 @@ def login_usuario(request):
     return render(request, "accounts/login.html")
 
 
-# ============================================================
-#                   PRODUCTOS
-# ============================================================
-
 def products(request):
     if not request.session.get("usuario_id"):
         messages.warning(request, "Debes iniciar sesión para ver los productos.", extra_tags="login warning")
@@ -204,9 +196,8 @@ def products(request):
     return render(request, "core/products.html", {"vehiculos": vehiculos})
 
 
-# ============================================================
-#                   ADMIN – EDITAR / ELIMINAR USUARIOS
-# ============================================================
+# ADMIN – EDITAR / ELIMINAR USUARIOS
+
 
 def editar_usuario(request, id):
     if request.session.get("usuario_rol") != "admin":
@@ -222,7 +213,7 @@ def editar_usuario(request, id):
         usuario.nombre_rol = request.POST.get("rol")
         usuario.activo = "activo" in request.POST
 
-        # 🔥 FOTO SUBIDA DESDE LA WEB
+        # FOTO SUBIDA DESDE LA WEEEEB
         if "foto_perfil" in request.FILES:
             usuario.foto_perfil = request.FILES["foto_perfil"]
 
@@ -247,9 +238,7 @@ def eliminar_usuario(request, id):
     return redirect("visualizar_perfiles")
 
 
-# ============================================================
-#                   REGISTRO
-# ============================================================
+
 
 def editar_perfil(request):
     # Identificar usuario logueado
@@ -274,17 +263,10 @@ def editar_perfil(request):
 
         messages.success(request, "Perfil actualizado correctamente.", extra_tags="perfil success")
 
-        # 🔥 Ruta correcta (arregla tu error)
+        
         return redirect("perfil_usuario", id=usuario.id_usuario)
 
     return render(request, "core/editar_perfil_cliente.html", {"usuario": usuario})
-
-
-
-
-
-
-
 
 
 
@@ -318,7 +300,7 @@ def registro_usuario(request):
             request.session["registro_foto_nombre"] = foto.name
             request.session["registro_foto_contenido"] = foto.read().decode("latin-1")
 
-        # Enviar código por correo
+        # Envimos código por correo
         send_mail(
             "Código de verificación - ClickCar",
             f"Tu código es: {codigo}",
@@ -344,9 +326,8 @@ def verificar_codigo(request):
             messages.error(request, "Código incorrecto.", extra_tags="codigo_registro error")
             return redirect("verificar_codigo")
 
-        # =============================
+    
         #   RECUPERAR FOTO DE LA SESIÓN
-        # =============================
         foto_contenido = request.session.get("registro_foto_contenido")
         foto_nombre = request.session.get("registro_foto_nombre")
         foto_file = None
@@ -357,21 +338,19 @@ def verificar_codigo(request):
             # Foto convertida desde la sesión
             foto_file = ContentFile(foto_contenido.encode("latin-1"), name=foto_nombre)
 
-        # =============================
+
         #      CREAR EL USUARIO
-        # =============================
         Usuario.objects.create(
             nombre=temp["nombre"],
             correo=temp["correo"],
             contrasena=temp["contrasena"],
             telefono=temp["telefono"],
             nombre_rol="cliente",
-            foto_perfil=foto_file   # <-- FOTO GUARDADA
+            foto_perfil=foto_file 
         )
 
-        # =============================
+
         #  LIMPIAR DATOS TEMPORALES
-        # =============================
         del request.session["registro_temp"]
         if "registro_foto_contenido" in request.session:
             del request.session["registro_foto_contenido"]
@@ -385,9 +364,6 @@ def verificar_codigo(request):
     return render(request, "registration/validar_codigo.html")
 
 
-# ============================================================
-#                   RECUPERAR CONTRASEÑA
-# ============================================================
 
 def olvide_password(request):
     if request.method == "POST":
@@ -452,9 +428,6 @@ def nueva_contrasena(request):
     return render(request, "registration/nueva_contrasena.html")
 
 
-# ============================================================
-#                ADMIN – PANEL Y PERFILES
-# ============================================================
 
 def visualizar_perfiles(request):
     if request.session.get("usuario_rol") != "admin":
@@ -483,10 +456,6 @@ def panel_reservas(request):
     })
 
 
-# ============================================================
-#                   MIS RESERVAS
-# ============================================================
-
 def mis_reservas(request):
     usuario_id = request.session.get("usuario_id") or request.session.get("id_usuario")
     if not usuario_id:
@@ -511,9 +480,6 @@ def ver_detalle_reserva(request, id_reserva):
     return render(request, "core/detalle_reserva.html", {"reserva": reserva})
 
 
-# ============================================================
-#                        PDF
-# ============================================================
 
 def descargar_pdf(request, id_reserva):
     reserva = get_object_or_404(Reserva, id_reserva=id_reserva)
@@ -568,10 +534,6 @@ def descargar_pdf_usuario(request):
 
     return response
 
-# ============================================================
-#                   CANCELAR RESERVA
-# ============================================================
-
 
 def cancelar_reserva(request, id_reserva):
     usuario_id = request.session.get("usuario_id") or request.session.get("id_usuario")
@@ -580,7 +542,7 @@ def cancelar_reserva(request, id_reserva):
 
     reserva = get_object_or_404(Reserva, id_reserva=id_reserva)
 
-    # 🔒 Validación de seguridad
+    # Validación de seguridad
     if reserva.usuario.id_usuario != usuario_id:
         messages.error(request, "No puedes cancelar reservas de otros usuarios.", extra_tags="mis_reservas error")
         return redirect("mis_reservas")
@@ -615,7 +577,7 @@ def cancelar_reserva(request, id_reserva):
         html_message=html_message,
     )
 
-    # ✔ Mensaje para mostrar en Mis Reservas
+    # Mensaje para mostrar en Mis Reservas
     messages.success(request, "Reserva cancelada correctamente.", extra_tags="mis_reservas success")
 
     return redirect("mis_reservas")
@@ -632,48 +594,44 @@ def lista_vehiculos(request):
 
 def agregar_vehiculo(request):
     if request.session.get("usuario_rol") != "admin":
-        messages.error(request, "Acceso denegado.", extra_tags="vehiculos error")
         return redirect("home")
 
     if request.method == "POST":
         marca = request.POST.get("marca")
         modelo = request.POST.get("modelo")
-        categoria = request.POST.get("categoria")
-        anio = request.POST.get("anio")
+        
+        # Convertir año vacío en NULL
+        anio_raw = request.POST.get("anio")
+        anio = anio_raw if anio_raw and anio_raw.strip() != "" else None
+
         precio_dia = request.POST.get("precio_dia")
         descripcion = request.POST.get("descripcion")
+        categoria = request.POST.get("categoria")
         combustible = request.POST.get("combustible")
         asientos = request.POST.get("asientos")
         color = request.POST.get("color")
-
-        # 🔥 FOTO SUBIDA DESDE LA WEB
         foto = request.FILES.get("foto")
 
-        # ⛔ VALIDAR IMAGEN
-        error_img = validar_imagen(foto)
-        if error_img:
-            messages.error(request, error_img, extra_tags="vehiculos error")
-            return redirect("agregar_vehiculo")
-
-        # ✔ GUARDAR VEHÍCULO
         Vehiculo.objects.create(
             marca=marca,
             modelo=modelo,
             categoria=categoria,
-            anio=anio,
+            anio=anio,              # ← AQUÍ YA VA NULL SI ESTABA VACÍO
             precio_dia=precio_dia,
             descripcion=descripcion,
             combustible=combustible,
             asientos=asientos,
             color=color,
-            foto=foto,  # ✔ Foto validada
+            foto=foto,
             disponible=True
         )
 
-        messages.success(request, "Vehículo agregado correctamente.", extra_tags="vehiculos success")
         return redirect("lista_vehiculos")
 
     return render(request, "core/agregar_vehiculo.html")
+
+
+
 
 
 
@@ -699,7 +657,7 @@ def editar_vehiculo(request, id_auto):
         vehiculo.asientos = request.POST.get("asientos")
         vehiculo.color = request.POST.get("color")
 
-        # 📸 FOTO NUEVA
+        #FOTO NUEVA
         nueva_foto = request.FILES.get("foto")
 
         if nueva_foto:
@@ -740,9 +698,7 @@ def eliminar_vehiculo(request, id_auto):
     return redirect("lista_vehiculos")
 
 
-from django.template.loader import get_template
-from django.http import HttpResponse
-from xhtml2pdf import pisa
+
 
 def pdf_reserva(request, id_reserva):
     reserva = get_object_or_404(Reserva, id_reserva=id_reserva)
@@ -766,14 +722,6 @@ def pdf_reserva(request, id_reserva):
 
     return response
 
-
-
-
-
-
-# ============================================================
-#                  VALIDACIÓN DE IMÁGENES
-# ============================================================
 
 def validar_imagen(foto, max_mb=5):
     if not foto:

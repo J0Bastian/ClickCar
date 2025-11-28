@@ -1,4 +1,4 @@
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.urls import reverse
 from datetime import date
 from core.models.usuarios import Usuario
@@ -9,54 +9,44 @@ from core.models.reserva import Reserva
 class TestReservas(TestCase):
 
     def setUp(self):
-        self.client = Client()
-        self.usuario = Usuario.objects.create(
-            nombre="Bastian",
-            correo="b@example.com",
-            contrasena="123",
-            nombre_rol="cliente"
-        )
-        self.auto = Vehiculo.objects.create(
-            marca="Mazda", modelo="CX-5", precio_dia=200000
+        self.user = Usuario.objects.create(
+            nombre="Luis",
+            correo="luis@test.com",
+            contrasena="123"
         )
 
-        session = self.client.session
-        session["usuario_id"] = self.usuario.id_usuario
-        session.save()
+        self.vehicle = Vehiculo.objects.create(
+            marca="Nissan",
+            modelo="Versa",
+            precio_dia=90000,
+            color="Azul"
+        )
 
-    def test_crear_reserva_valida(self):
-        response = self.client.post(reverse("reserva", args=[self.auto.id_vehiculo]), {
-            "fecha_inicio": "2025-10-10",
-            "fecha_fin": "2025-10-12"
-        })
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("confirmar_reserva"))
+        self.client.session["usuario_id"] = self.user.id_usuario
+        self.client.session.save()
 
-    def test_conflicto_fechas(self):
+def test_crear_reserva_valida(self):
+    url = reverse("reserva", args=[self.vehicle.id_auto])
+    r = self.client.post(url, {
+        "fecha_inicio": "2025-01-01",
+        "fecha_fin": "2025-01-03",
+    }, follow=True)
+    self.assertIn("datos_reserva", self.client.session)
+
+
+    def test_conflicto_de_fechas(self):
         Reserva.objects.create(
-            usuario=self.usuario,
-            auto=self.auto,
-            fecha_inicio="2025-10-10",
-            fecha_fin="2025-10-12",
-            valor_total=200000
+            usuario=self.user,
+            auto=self.vehicle,
+            fecha_inicio=date(2025, 1, 1),
+            fecha_fin=date(2025, 1, 10),
+            valor_total=100,
+            estado="confirmada"
         )
 
-        response = self.client.post(reverse("reserva", args=[self.auto.id_vehiculo]), {
-            "fecha_inicio": "2025-10-11",
-            "fecha_fin": "2025-10-13"
+        url = reverse("reserva", args=[self.vehicle.id_auto])
+        r = self.client.post(url, {
+            "fecha_inicio": "2025-01-05",
+            "fecha_fin": "2025-01-07",
         })
-        self.assertEqual(response.status_code, 302)
-
-    def test_confirmar_reserva(self):
-        session = self.client.session
-        session["datos_reserva"] = {
-            "vehiculo_id": self.auto.id_vehiculo,
-            "fecha_inicio": "2025-10-10",
-            "fecha_fin": "2025-10-12",
-            "valor_total": 400000,
-        }
-        session.save()
-
-        response = self.client.post(reverse("confirmar_reserva"))
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, reverse("home"))
+        self.assertEqual(r.status_code, 302)

@@ -10,7 +10,7 @@ class Vehiculo(models.Model):
     disponible = models.BooleanField(default=True)
     descripcion = models.TextField(null=True, blank=True)
 
-    # CAMPO CORRECTO PARA SUBIR FOTOS
+    # subir imagenes
     foto = models.ImageField(upload_to='vehiculos/', null=True, blank=True)
 
     combustible = models.CharField(max_length=50, null=True, blank=True)
