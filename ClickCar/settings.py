@@ -7,6 +7,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Archivos estáticos
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Archivos multimedia (imágenes, videos, PDFs)
 MEDIA_URL = '/media/'
@@ -14,7 +18,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 SECRET_KEY = 'django-insecure-pot4knap+5g$4dnj)ikv229v01x)@bv2&ais4xp#yh=f#!+_la'
 DEBUG = True
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app', 'localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -34,6 +38,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ClickCar.urls'
@@ -53,7 +58,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ClickCar.wsgi.application'
+WSGI_APPLICATION = 'ClickCar.wsgi.app'
 
 DATABASES = {
     'default': {

@@ -75,12 +75,12 @@
 
             <div class="date-box">
                 <label>Desde:</label>
-                <input type="date" name="fecha_inicio" required>
+                <input type="date" name="fecha_inicio" min="{{ hoy }}" required>
             </div>
 
             <div class="date-box">
                 <label>Hasta:</label>
-                <input type="date" name="fecha_fin" required>
+                <input type="date" name="fecha_fin" min="{{ hoy }}" required>
             </div>
 
         </div>

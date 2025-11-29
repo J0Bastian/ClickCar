@@ -41,8 +41,13 @@ def exit(request):
 
 
 
+from datetime import date, datetime
+
 def reserva(request, id_auto):
     vehiculo = get_object_or_404(Vehiculo, id_auto=id_auto)
+
+    # Enviar fecha de hoy para bloquear días pasados en el calendario
+    hoy = date.today().isoformat()
 
     if request.method == "POST":
 
@@ -56,6 +61,11 @@ def reserva(request, id_auto):
         except:
             return redirect("reserva", id_auto=id_auto)
 
+        # Evitar reservar fechas pasadas
+        if fecha_inicio < date.today():
+            return redirect("reserva", id_auto=id_auto)
+
+        # Final no puede ser menor al inicio
         if fecha_fin < fecha_inicio:
             return redirect("reserva", id_auto=id_auto)
 
@@ -83,7 +93,11 @@ def reserva(request, id_auto):
 
         return redirect("confirmar_reserva")
 
-    return render(request, "core/reserva.html", {"vehiculo": vehiculo})
+    return render(request, "core/reserva.html", {
+        "vehiculo": vehiculo,
+        "hoy": hoy
+    })
+
 
 
 
